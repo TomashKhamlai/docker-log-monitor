@@ -1,0 +1,19 @@
+version: "3.9"
+
+services:
+  crash:
+    image: tkhamlai/crash:latest
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1k"
+        max-file: "10"
+
+  watcher:
+    image: tkhamlai/watcher:latest
+    volumes:
+    - /var/lib/docker/containers:/container-logs:ro
+    - /var/run/docker.sock:/var/run/docker.sock:ro
+    depends_on:
+    - crash
